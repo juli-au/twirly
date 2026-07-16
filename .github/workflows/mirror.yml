@@ -1,7 +1,7 @@
-# Mirror the site to juli-au/twirly, which serves the same content at
-# https://twirly.juli.au/. GitHub Pages supports one custom domain per
-# repository, so the second domain needs a second repository; this
-# workflow keeps it in sync so the two domains can never drift apart.
+# Mirror the site to the org repositories that serve it on additional
+# domains. GitHub Pages supports one custom domain per repository, so
+# each extra domain needs its own repository; mirroring on every push
+# keeps them all on the same commit so the domains cannot drift apart.
 # The only difference between the repositories is the CNAME file.
 name: mirror
 
@@ -12,17 +12,31 @@ on:
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repo: juli-au/twirly
+            cname: twirly.juli.au
+            secret: MIRROR_SSH_KEY
+          - repo: mak3r-space/twirly
+            cname: twirly.mak3r.space
+            secret: MIRROR_SSH_KEY_MAK3R
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Pushing to the mirror needs the full history, not the
+          # shallow single-commit checkout that is the default.
+          fetch-depth: 0
 
-      - name: Push to juli-au/twirly with swapped CNAME
+      - name: Push to ${{ matrix.repo }} with swapped CNAME
         run: |
-          echo "twirly.juli.au" > CNAME
+          echo "${{ matrix.cname }}" > CNAME
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git commit -am "Mirror juliaogris/twirly@${GITHUB_SHA::7}"
           mkdir -p ~/.ssh
-          echo "${{ secrets.MIRROR_SSH_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets[matrix.secret] }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
-          git push --force git@github.com:juli-au/twirly.git HEAD:main
+          git push --force git@github.com:${{ matrix.repo }}.git HEAD:main
