@@ -86,6 +86,10 @@ legend {
     color: var(--accent);
 }
 
+.control.disabled {
+    opacity: 0.35;
+}
+
 .control input[type="range"] {
     grid-column: 1 / -1;
     width: 100%;

@@ -118,10 +118,24 @@ function buildControl(param) {
     input.addEventListener("input", () => {
         values[param.scad] = Number(input.value);
         output.textContent = input.value;
+        syncTopControls();
         scheduleRender();
     });
     div.append(output, input);
     return div;
+}
+
+// With pointiness 0 the top stays open, so the tip-shape parameters have
+// no effect; grey them out to signal that.
+function syncTopControls() {
+    const off = values.pointiness === 0;
+    for (const id of ["roundness", "tip_fraction"]) {
+        const input = document.getElementById(id);
+        if (input) {
+            input.disabled = off;
+            input.closest(".control").classList.toggle("disabled", off);
+        }
+    }
 }
 
 // ---------------------------------------------------------------------
@@ -314,6 +328,7 @@ document.getElementById("canvas").addEventListener("pointerdown", () => {
 
 applyUrlParams();
 buildControls();
+syncTopControls();
 try {
     viewer = initViewer();
 } catch (err) {

@@ -37,8 +37,8 @@ export const GROUPS = [
     {
         title: "Top",
         params: [
-            { scad: "roundness", label: "roundness", min: 0.5, max: 8, step: 0.5, value: 4 },
             { scad: "pointiness", label: "pointiness (0 = open top)", min: 0, max: 10, step: 0.5, value: 1 },
+            { scad: "roundness", label: "roundness", min: 0.5, max: 8, step: 0.5, value: 4 },
             { scad: "tip_fraction", label: "tip size", min: 0.005, max: 0.2, step: 0.005, value: 0.02 },
         ],
     },
