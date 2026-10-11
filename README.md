@@ -1,5 +1,7 @@
 # twirly
 
+[![Listed on SkipTheCAD](https://skipthecad.com/badge/listed-dark.svg)](https://skipthecad.com/generators/twirly/)
+
 A twisted vase generator that runs entirely in the browser. Sliders control
 the shape parameters, [openscad-wasm](https://github.com/openscad/openscad-wasm)
 renders the model in a web worker, and [three.js](https://threejs.org/)
@@ -11,6 +13,15 @@ https://twirly.juli.au/ and https://twirly.mak3r.space/ by the
 
 The shape parameters live in the URL query string, so a configured shape
 can be shared by copying the address.
+
+twirly is listed on
+[SkipTheCAD](https://skipthecad.com/generators/twirly/), a directory of 3D
+print generators for people who don't do CAD.
+
+## Prints
+
+You may sell prints made with twirly. If you print one, I'd love a photo
+at [julia.ogris@gmail.com](mailto:julia.ogris@gmail.com), but no pressure.
 
 ## How it works
 
